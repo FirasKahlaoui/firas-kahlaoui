@@ -25,7 +25,7 @@ import {
 } from "../assets";
 import grade from "../assets/Grade Calc.png";
 import werescue from "../assets/werescue.jpg";
-import heart from "../assets/heart.jpg";
+import heart from "../assets/heart.png";
 
 import python from "../assets/tech/python-icon.svg";
 import java from "../assets/tech/java-icon.svg";
