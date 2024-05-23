@@ -22,10 +22,10 @@ import {
   mongodb,
   git,
   docker,
-  carrent,
-  jobit,
-  tripguide,
 } from "../assets";
+import grade from "../assets/Grade Calc.png";
+import werescue from "../assets/werescue.jpg";
+import heart from "../assets/heart.jpg";
 
 import python from "../assets/tech/python-icon.svg";
 import java from "../assets/tech/java-icon.svg";
@@ -209,67 +209,67 @@ const testimonials: TTestimonial[] = [
 
 const projects: TProject[] = [
   {
-    name: "Car Rent",
+    name: "Grade Calculator",
     description:
-      "Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.",
+      "A simple and easy-to-use tool for university students to calculate their semester averages and plan their academic goals. ",
     tags: [
       {
         name: "react",
         color: "blue-text-gradient",
       },
       {
-        name: "mongodb",
+        name: "HTML",
         color: "green-text-gradient",
       },
       {
-        name: "tailwind",
+        name: "CSS",
         color: "pink-text-gradient",
       },
     ],
-    image: carrent,
-    sourceCodeLink: "https://github.com/",
+    image: grade,
+    sourceCodeLink: "https://github.com/FirasKahlaoui/Moy_Calculator_ISAMM",
   },
   {
-    name: "Job IT",
+    name: "We Rescue",
     description:
-      "Web application that enables users to search for job openings, view estimated salary ranges for positions, and locate available jobs based on their current location.",
+      "Mobile app that connects animal shelters with potential adopters, making it easier for users to find their perfect pet match.",
     tags: [
       {
-        name: "react",
+        name: "Java",
         color: "blue-text-gradient",
       },
       {
-        name: "restapi",
+        name: "Firebase",
         color: "green-text-gradient",
       },
       {
-        name: "scss",
+        name: "MySQL",
         color: "pink-text-gradient",
       },
     ],
-    image: jobit,
-    sourceCodeLink: "https://github.com/",
+    image: werescue,
+    sourceCodeLink: "https://github.com/FirasKahlaoui/We-Rescue",
   },
   {
-    name: "Trip Guide",
+    name: "Heart Disease Model",
     description:
-      "A comprehensive travel booking platform that allows users to book flights, hotels, and rental cars, and offers curated recommendations for popular destinations.",
+      "A machine learning model that predicts the likelihood of a person having heart disease based on their medical history and lifestyle.",
     tags: [
       {
-        name: "nextjs",
+        name: "Jupyter",
         color: "blue-text-gradient",
       },
       {
-        name: "supabase",
+        name: "Python",
         color: "green-text-gradient",
       },
       {
-        name: "css",
+        name: "Sklearn",
         color: "pink-text-gradient",
       },
     ],
-    image: tripguide,
-    sourceCodeLink: "https://github.com/",
+    image: heart,
+    sourceCodeLink: "https://github.com/FirasKahlaoui/Heart_Disease_Prediction",
   },
 ];
 
