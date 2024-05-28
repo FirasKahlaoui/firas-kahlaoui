@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getDatabase, ref, push } from "firebase/database";
+import { initializeApp } from 'firebase/app';
 
 import { EarthCanvas } from "../canvas";
 import { SectionWrapper } from "../../hoc";
@@ -12,12 +13,24 @@ const INITIAL_STATE = Object.fromEntries(
   Object.keys(config.contact.form).map((input) => [input, ""])
 );
 
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_REACT_APP_FIREBASE_APP_ID
+};
 
 const Contact = () => {
   const formRef = useRef<React.LegacyRef<HTMLFormElement> | undefined>();
   const [form, setForm] = useState(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    initializeApp(firebaseConfig);
+  }, []);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
@@ -27,32 +40,32 @@ const Contact = () => {
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement> | undefined) => {
-  if (e === undefined) return;
-  e.preventDefault();
+    if (e === undefined) return;
+    e.preventDefault();
 
-  // Check if all fields are filled
-  for (const key in form) {
-    if (form[key as keyof typeof form] === "") {
-      alert("Please fill all fields.");
-      return;
+    // Check if all fields are filled
+    for (const key in form) {
+      if (form[key as keyof typeof form] === "") {
+        alert("Please fill all fields.");
+        return;
+      }
     }
-  }
 
-  setLoading(true);
+    setLoading(true);
 
-  const db = getDatabase();
-  push(ref(db, 'contacts/'), form)
-    .then(() => {
-      setLoading(false);
-      alert("Thank you. I will get back to you as soon as possible.");
-      setForm(INITIAL_STATE);
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error);
-      alert("Something went wrong.");
-    });
-};
+    const db = getDatabase();
+    push(ref(db, 'contacts/'), form)
+      .then(() => {
+        setLoading(false);
+        alert("Thank you. I will get back to you as soon as possible.");
+        setForm(INITIAL_STATE);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+        alert("Something went wrong.");
+      });
+  };
   return (
     <div
       className={`flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row`}
