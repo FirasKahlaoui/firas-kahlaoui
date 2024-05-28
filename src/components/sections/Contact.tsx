@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
+import { getDatabase, ref, push } from "firebase/database";
 
 import { EarthCanvas } from "../canvas";
 import { SectionWrapper } from "../../hoc";
@@ -12,11 +12,6 @@ const INITIAL_STATE = Object.fromEntries(
   Object.keys(config.contact.form).map((input) => [input, ""])
 );
 
-const emailjsConfig = {
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  templateId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  accessToken: import.meta.env.VITE_EMAILJS_ACCESS_TOKEN,
-};
 
 const Contact = () => {
   const formRef = useRef<React.LegacyRef<HTMLFormElement> | undefined>();
@@ -32,39 +27,32 @@ const Contact = () => {
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement> | undefined) => {
-    if (e === undefined) return;
-    e.preventDefault();
-    setLoading(true);
+  if (e === undefined) return;
+  e.preventDefault();
 
-    emailjs
-      .send(
-        emailjsConfig.serviceId,
-        emailjsConfig.templateId,
-        {
-          form_name: form.name,
-          to_name: config.html.fullName,
-          from_email: form.email,
-          to_email: config.html.email,
-          message: form.message,
-        },
-        emailjsConfig.accessToken
-      )
-      .then(
-        () => {
-          setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
+  // Check if all fields are filled
+  for (const key in form) {
+    if (form[key as keyof typeof form] === "") {
+      alert("Please fill all fields.");
+      return;
+    }
+  }
 
-          setForm(INITIAL_STATE);
-        },
-        (error) => {
-          setLoading(false);
+  setLoading(true);
 
-          console.log(error);
-          alert("Something went wrong.");
-        }
-      );
-  };
-
+  const db = getDatabase();
+  push(ref(db, 'contacts/'), form)
+    .then(() => {
+      setLoading(false);
+      alert("Thank you. I will get back to you as soon as possible.");
+      setForm(INITIAL_STATE);
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error);
+      alert("Something went wrong.");
+    });
+};
   return (
     <div
       className={`flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row`}
