@@ -46,7 +46,6 @@ const Contact = () => {
     if (e === undefined) return;
     e.preventDefault();
 
-    // Check if all fields are filled
     for (const key in form) {
       if (form[key as keyof typeof form] === "") {
         toast.error("Please fill all fields.");
@@ -78,7 +77,7 @@ const Contact = () => {
         <Header useMotion={false} {...config.contact} />
 
         <form
-          ref={formRef}
+          ref={formRef.current}
           onSubmit={handleSubmit}
           className="mt-12 flex flex-col gap-8"
         >
