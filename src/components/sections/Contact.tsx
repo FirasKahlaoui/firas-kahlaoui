@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { motion } from "framer-motion";
 import { getDatabase, ref, push } from "firebase/database";
 import { initializeApp } from 'firebase/app';
@@ -46,7 +49,7 @@ const Contact = () => {
     // Check if all fields are filled
     for (const key in form) {
       if (form[key as keyof typeof form] === "") {
-        alert("Please fill all fields.");
+        toast.error("Please fill all fields.");
         return;
       }
     }
@@ -57,34 +60,30 @@ const Contact = () => {
     push(ref(db, 'contacts/'), form)
       .then(() => {
         setLoading(false);
-        alert("Thank you. I will get back to you as soon as possible.");
+        toast.success("Thank you. I will get back to you as soon as possible.");
         setForm(INITIAL_STATE);
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
-        alert("Something went wrong.");
+        toast.error("Something went wrong.");
       });
   };
+
   return (
-    <div
-      className={`flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row`}
-    >
-      <motion.div
-        variants={slideIn("left", "tween", 0.2, 1)}
-        className="bg-black-100 flex-[0.75] rounded-2xl p-8"
-      >
+    <div className={`flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row`}>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+
+      <motion.div variants={slideIn("left", "tween", 0.2, 1)} className="bg-black-100 flex-[0.75] rounded-2xl p-8">
         <Header useMotion={false} {...config.contact} />
 
         <form
-          // @ts-expect-error
           ref={formRef}
           onSubmit={handleSubmit}
           className="mt-12 flex flex-col gap-8"
         >
           {Object.keys(config.contact.form).map((input) => {
-            const { span, placeholder } =
-              config.contact.form[input as keyof typeof config.contact.form];
+            const { span, placeholder } = config.contact.form[input as keyof typeof config.contact.form];
             const Component = input === "message" ? "textarea" : "input";
 
             return (
@@ -111,14 +110,12 @@ const Contact = () => {
         </form>
       </motion.div>
 
-      <motion.div
-        variants={slideIn("right", "tween", 0.2, 1)}
-        className="h-[350px] md:h-[550px] xl:h-auto xl:flex-1"
-      >
+      <motion.div variants={slideIn("right", "tween", 0.2, 1)} className="h-[350px] md:h-[550px] xl:h-auto xl:flex-1">
         <EarthCanvas />
       </motion.div>
     </div>
   );
-};
+
+}
 
 export default SectionWrapper(Contact, "contact");
