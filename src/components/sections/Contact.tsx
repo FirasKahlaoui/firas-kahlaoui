@@ -71,7 +71,18 @@ const Contact = () => {
 
   return (
     <div className={`flex flex-col-reverse gap-10 overflow-hidden xl:mt-12 xl:flex-row`}>
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <ToastContainer style={{ marginTop: '100px' }} />
 
       <motion.div variants={slideIn("left", "tween", 0.2, 1)} className="bg-black-100 flex-[0.75] rounded-2xl p-8">
         <Header useMotion={false} {...config.contact} />
